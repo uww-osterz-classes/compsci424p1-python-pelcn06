@@ -17,7 +17,9 @@ You will submit your assignment using GitHub Classroom. See the Program 1 assign
 
 """
 
+from asyncio.windows_events import NULL
 from operator import index
+from pickle import FALSE, TRUE
 import time
 
 """
@@ -46,7 +48,9 @@ import time
             Output may be returned to the calling function or sent directly to standard output using println, cout, printf, or similar: your choice.
 """
 class PCB:
+
     def __init__(self):
+        used = FALSE
         pass
 
     def __init__(self, version, parent, index):
@@ -64,6 +68,7 @@ class PCB:
                 self.parent=parent
                 self.children=[]
                 self.pid = index
+                used = TRUE
 
                 """
                 For the purposes of performance evaluation, the PCBs are simplified as follows:
@@ -73,28 +78,13 @@ class PCB:
                 Each PCB is a structure consisting of only two fields:
                 parent: a PCB index corresponding to the process's creator
                 children: a pointer to a linked list, where each list element contains the PCB index of one child process
-
-                The necessary functions are simplified as follows:
-
-                create(p) represents the create function executed by process PCB[p]. The function creates a new child process PCB[q] of process PCB[p] by performing the following tasks:
-                allocate a free PCB[q]
-                record the parent's index, p, in PCB[q]
-                initialize the list of children of PCB[q] as empty
-                create a new link containing the child's index q and appends the link to the linked list of PCB[p]
-
-
-                destroy(p) represents the destroy function executed by process PCB[p]. The function recursively destroys all descendant processes (child, grandchild, etc.) of process PCB[p] by performing the following tasks:
-                for each element q on the linked list of children of PCB[p]:
-                destroy(q) /* recursively destroy all descendants */
-                free PCB[q]
-                deallocate the element q from the linked list
                 """
+                
 
 
             case 2:
                 """
                 Version 2 of the same process creation hierarchy uses no linked lists. Instead, each PCB contains the 4 integer fields parent, first_child, younger_sibling, and older_sibling, as described in the subsection "Avoiding linked lists". Here is the relevant text from our zyBook, section 2.3.
-
         Linked lists require dynamic memory management, which is costly. The Linux OS has pioneered an approach that eliminates this overhead.
 
         Instead of a separate linked list anchored in the parent's PCB, the links are distributed over the child PCBs such that each points to the immediate younger sibling and immediate older sibling. The original 2 fields, parent and children, in the PCB of a process p are replaced by 4 new fields:
@@ -104,10 +94,51 @@ class PCB:
             younger_sibling: points to the sibling of p created immediately following p
             older_sibling: points to the sibling of p created immediately prior to p
                 """
+                self.parent=parent
+                first_child=NULL
+                younger_sibling=NULL
+                older_sibling=NULL
+                self.pid = index
+                used = TRUE
 
             case _:
                 print("Error in PCB version assignment")
-    def create(p):
+
+    """
+    The necessary functions are simplified as follows:
+
+    create(p) represents the create function executed by process PCB[p]. The function creates a new child process PCB[q] of process PCB[p] by performing the following tasks:
+    allocate a free PCB[q]
+    record the parent's index, p, in PCB[q]
+    initialize the list of children of PCB[q] as empty
+    create a new link containing the child's index q and appends the link to the linked list of PCB[p]
+    """
+    """
+    destroy(p) represents the destroy function executed by process PCB[p]. The function recursively destroys all descendant processes (child, grandchild, etc.) of process PCB[p] by performing the following tasks:
+    for each element q on the linked list of children of PCB[p]:
+    destroy(q) /* recursively destroy all descendants */
+    free PCB[q]
+    deallocate the element q from the linked list
+    """
+    def create1(p):
+        pass
+
+    def create2(p):
+        pass
+
+    """
+    destroy(p) represents the destroy function executed by process PCB[p]. The function recursively destroys all descendant processes (child, grandchild, etc.) of process PCB[p] by performing the following tasks:
+    for each element q on the linked list of children of PCB[p]:
+    destroy(q) /* recursively destroy all descendants */
+    free PCB[q]
+    deallocate the element q from the linked list
+    """
+    def destroy1(p):
+        pass
+
+    def destroy2(p):
+        pass
+
 
 
 
@@ -128,8 +159,18 @@ class PCB:
 """
 
 print("Welcome to the process hierarchy program.")
-command = input("please enter command (create N; destroy N; end): ")
-#BREAK COMMAND INTO WORD AND NUMBER TUPLE
+command = "create 0"
+commandList=[]
+while(command != "end"):
+    
+    commandList.append((command[0], command[1]))
+    command = input("please enter command (create N; destroy N; end): ").split()
 
 
-PCBs=[16]
+
+
+PCB1=[PCB()] * 16
+PCB1[0] = PCB(1, -1, 0)
+PCB2=[PCB()] * 16
+
+print("end of program")

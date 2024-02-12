@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ea22d4f0-43a4-4c47-821f-c9cc343c2abf</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>OSProgram1.py</StartupFile>
+    <StartupFile>p1main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="OSProgram1.py" />
+    <Compile Include="p1main.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
