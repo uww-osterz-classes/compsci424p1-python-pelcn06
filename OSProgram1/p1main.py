@@ -49,11 +49,7 @@ import time
 """
 class PCB:
 
-    def __init__(self):
-        used = FALSE
-        pass
-
-    def __init__(self, version, parent, index):
+    def __init__(self, version=0, parent=-1, index=0):
         self.version=version
         match version:
             case 1:
@@ -102,7 +98,7 @@ class PCB:
                 used = TRUE
 
             case _:
-                print("Error in PCB version assignment")
+                self.used = FALSE
 
     """
     The necessary functions are simplified as follows:
@@ -113,17 +109,11 @@ class PCB:
     initialize the list of children of PCB[q] as empty
     create a new link containing the child's index q and appends the link to the linked list of PCB[p]
     """
-    """
-    destroy(p) represents the destroy function executed by process PCB[p]. The function recursively destroys all descendant processes (child, grandchild, etc.) of process PCB[p] by performing the following tasks:
-    for each element q on the linked list of children of PCB[p]:
-    destroy(q) /* recursively destroy all descendants */
-    free PCB[q]
-    deallocate the element q from the linked list
-    """
-    def create1(p):
+
+    def create1(parent, pid):
         pass
 
-    def create2(p):
+    def create2(parent, pid, older_sibling):
         pass
 
     """
@@ -133,10 +123,13 @@ class PCB:
     free PCB[q]
     deallocate the element q from the linked list
     """
-    def destroy1(p):
+    def destroy1(pid):
         pass
 
-    def destroy2(p):
+    def destroy2(pid):
+        pass
+
+    def showProcessInfo():
         pass
 
 
@@ -146,31 +139,34 @@ class PCB:
 
 """
     Write a main method or function that provides the following workflow.
-        Ask the user to enter commands of the form "create N", "destroy N", or "end", where N is an integer between 0 and 15.
         While the user has not typed "end", continue accepting commands. Add each command to a list of actions to take while you run the simulation.
             Hint: the commands could be stored as a list of (string, int) pairs, or you might think of another way to store them.
         When the user types "end" (or optionally any word that is not "create" or "destroy"), stop accepting commands and complete the following steps.
-        Create an object of the Version 1 class and an object of the Version 2 class.
-        Run the command sequence once with the Version 1 object, calling its showProcessInfo method after each command to show the changes in the tree after each command.
-        Repeat step 5, but with Version 2.
-        Store the current system time in a variable, then run the command sequence 200 times with Version 1. After this, store the new current system time in a second variable. Subtract the start time from the end time to get the Version 1 running time, then display the Version 1 running time.
-            Note: Don't call showProcessInfo while running this loop. This will make the output shorter and more readable.
-        Repeat step 7, but with Version 2.
+
 """
 
 print("Welcome to the process hierarchy program.")
-command = "create 0"
+command = ("create", "0") #This is filler and is going to be skipped at execution
 commandList=[]
-while(command != "end"):
-    
+while(command[0] != "end"):
+    #Ask the user to enter commands of the form "create N", "destroy N", or "end", where N is an integer between 0 and 15.
     commandList.append((command[0], command[1]))
     command = input("please enter command (create N; destroy N; end): ").split()
 
 
-
-
+"""
+#Create an object of the Version 1 class and an object of the Version 2 class.
+        #Run the command sequence once with the Version 1 object, calling its showProcessInfo method after each command to show the changes in the tree after each command.  Repeat step 5, but with Version 2.
+        Store the current system time in a variable, then run the command sequence 200 times with Version 1. After this, store the new current system time in a second variable. Subtract the start time from the end time to get the Version 1 running time, then display the Version 1 running time.
+            Note: Don't call showProcessInfo while running this loop. This will make the output shorter and more readable.
+        Repeat step 7, but with Version 2.
+"""
 PCB1=[PCB()] * 16
 PCB1[0] = PCB(1, -1, 0)
 PCB2=[PCB()] * 16
+PCB1[0] = PCB(2, -1, 0)
+
+#Run the command sequence once with the Version 1 object, calling its showProcessInfo method after each command to show the changes in the tree after each command.  Repeat step 5, but with Version 2.
+
 
 print("end of program")
