@@ -104,11 +104,25 @@ class PCB:
     free PCB[q]
     deallocate the element q from the linked list
     """
-    def destroy1(parent):
-        pass
+    def destroy1(pid, PCB1):
+        PCB1[pid].used = False
+        for x in PCB1[pid].children:
+            PCB.destroy1(x, PCB1)
+        if PCB1[pid].parent >= 0:
+            PCB1[PCB1[pid].parent].children.remove(pid)
+            
 
-    def destroy2(parent):
-        pass
+    def destroy2(pid, PCB2):
+        PCB2[pid].used = False
+        if PCB2[pid].parent >= 0:
+            if PCB2[PCB2[pid].parent].first_child == pid:
+                PCB2[PCB2[pid].parent].first_child = PCB2[pid].younger_sibling
+            else: 
+                PCB2[PCB2[pid].older_sibling].younger_sibling = PCB2[pid].younger_sibling
+        x = PCB2[pid].first_child
+        while x != None:
+            PCB.destroy2(x, PCB2)
+            x = PCB2[x].younger_sibling
 
     """
     create(p) represents the create function executed by process PCB[p]. The function creates a new child process PCB[q] of process PCB[p] by performing the following tasks:
@@ -196,8 +210,8 @@ for x in commandList:
 
         case "destroy":
             if PCB1[x[1]].used == True:
-                PCB1[x[1]].destroy1(x[1])
-                PCB2[x[1]].destroy2(x[1])
+                PCB1[x[1]].destroy1(x[1], PCB1)
+                PCB2[x[1]].destroy2(x[1], PCB2)
 
         case _:
             pass
