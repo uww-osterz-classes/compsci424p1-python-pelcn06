@@ -167,8 +167,27 @@ class PCB:
                 For Processes 2 and 3 in this example, your output may say child is empty or children are empty instead of has no children.
             Output may be returned to the calling function or sent directly to standard output using println, cout, printf, or similar: your choice.
     """
-    def showProcessInfo():
-        pass
+    def showProcessInfo(self, PCB2):
+        childs = ""
+        match self.version:
+            case 1:
+                for x in self.children:
+                    childs += str(x)
+                if childs.__len__ > 0:
+                    print(f"Process {self.pid}: parent is {self.parent} and children are {childs}")
+                else:
+                    print(f"Process {self.pid}: parent is {self.parent} and has no children")
+            case 2:
+                childs = ""
+                x = self.first_child
+                while x != None:
+                    childs += str(x) + " "
+                    x = PCB2[x].younger_sibling
+        if childs.__len__ > 0:
+            print(f"Process {self.pid}: parent is {self.parent} and children are {childs}")
+        else:
+            print(f"Process {self.pid}: parent is {self.parent} and has no children")
+            
 
 
 
@@ -217,10 +236,10 @@ for x in commandList:
             pass
 
 for x in PCB1:
-    x.showProcessInfo()
+    x.showProcessInfo(None)
     print("\n\n")
 for x in PCB2:
-    x.showProcessInfo()
+    x.showProcessInfo(PCB2)
     print("\n\n")
 
 #Store the current system time in a variable, then run the command sequence 200 times with Version 1. After this, store the new current system time in a second variable. Subtract the start time from the end time to get the Version 1 running time, then display the Version 1 running time.
