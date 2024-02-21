@@ -17,9 +17,6 @@ You will submit your assignment using GitHub Classroom. See the Program 1 assign
 
 """
 
-from asyncio.windows_events import NULL
-from operator import index
-from pickle import FALSE, TRUE
 import time
 
 """
@@ -64,7 +61,7 @@ class PCB:
                 self.parent=parent
                 self.children=[]
                 self.pid = index
-                used = TRUE
+                self.used = True
 
                 """
                 For the purposes of performance evaluation, the PCBs are simplified as follows:
@@ -91,30 +88,14 @@ class PCB:
             older_sibling: points to the sibling of p created immediately prior to p
                 """
                 self.parent=parent
-                first_child=NULL
-                younger_sibling=NULL
-                older_sibling=NULL
+                self.first_child=None
+                self.younger_sibling=None
+                self.older_sibling=None
                 self.pid = index
-                used = TRUE
+                self.used = True
 
             case _:
-                self.used = FALSE
-
-    """
-    The necessary functions are simplified as follows:
-
-    create(p) represents the create function executed by process PCB[p]. The function creates a new child process PCB[q] of process PCB[p] by performing the following tasks:
-    allocate a free PCB[q]
-    record the parent's index, p, in PCB[q]
-    initialize the list of children of PCB[q] as empty
-    create a new link containing the child's index q and appends the link to the linked list of PCB[p]
-    """
-
-    def create1(parent, pid):
-        pass
-
-    def create2(parent, pid, older_sibling):
-        pass
+                self.used = False
 
     """
     destroy(p) represents the destroy function executed by process PCB[p]. The function recursively destroys all descendant processes (child, grandchild, etc.) of process PCB[p] by performing the following tasks:
@@ -123,16 +104,40 @@ class PCB:
     free PCB[q]
     deallocate the element q from the linked list
     """
-    def destroy1(pid):
+    def destroy1(parent):
         pass
 
-    def destroy2(pid):
+    def destroy2(parent):
         pass
 
+    """
+    create(p) represents the create function executed by process PCB[p]. The function creates a new child process PCB[q] of process PCB[p] by performing the following tasks:
+    allocate a free PCB[q]
+    record the parent's index, p, in PCB[q]
+    initialize the list of children of PCB[q] as empty
+    create a new link containing the child's index q and appends the link to the linked list of PCB[p]
+    """
+    def create1(parent):
+        pass
+    def create2(parent):
+        pass
+
+    """
+            showProcessInfo()
+            Recursively traverse the process creation hierarchy graph, printing information about each process as you go.
+            The output must follow the format in this example.
+
+            Process 0: parent is -1 and children are 1 2
+            Process 1: parent is 0 and children are 3
+            Process 2: parent is 0 and has no children
+            Process 3: parent is 1 and has no children
+
+                For Process 1 in this example, your output may say child is 3 instead of children are 3.
+                For Processes 2 and 3 in this example, your output may say child is empty or children are empty instead of has no children.
+            Output may be returned to the calling function or sent directly to standard output using println, cout, printf, or similar: your choice.
+    """
     def showProcessInfo():
         pass
-
-
 
 
 
@@ -146,27 +151,91 @@ class PCB:
 """
 
 print("Welcome to the process hierarchy program.")
-command = ("create", "0") #This is filler and is going to be skipped at execution
+command = ("skip", "0") #This is filler and is going to be skipped at execution
 commandList=[]
 while(command[0] != "end"):
     #Ask the user to enter commands of the form "create N", "destroy N", or "end", where N is an integer between 0 and 15.
     commandList.append((command[0], command[1]))
-    command = input("please enter command (create N; destroy N; end): ").split()
+    command = input("please enter command to add (create N; destroy N; end): ").split()
 
 
-"""
 #Create an object of the Version 1 class and an object of the Version 2 class.
-        #Run the command sequence once with the Version 1 object, calling its showProcessInfo method after each command to show the changes in the tree after each command.  Repeat step 5, but with Version 2.
-        Store the current system time in a variable, then run the command sequence 200 times with Version 1. After this, store the new current system time in a second variable. Subtract the start time from the end time to get the Version 1 running time, then display the Version 1 running time.
-            Note: Don't call showProcessInfo while running this loop. This will make the output shorter and more readable.
-        Repeat step 7, but with Version 2.
-"""
+
 PCB1=[PCB()] * 16
 PCB1[0] = PCB(1, -1, 0)
 PCB2=[PCB()] * 16
-PCB1[0] = PCB(2, -1, 0)
+PCB2[0] = PCB(2, -1, 0)
+
 
 #Run the command sequence once with the Version 1 object, calling its showProcessInfo method after each command to show the changes in the tree after each command.  Repeat step 5, but with Version 2.
+for x in commandList:
+    match x[0]:
+        case "create":
+            if PCB1[x[1]].used == True:
+                PCB1[x[1]].create1()
+                PCB2[x[2]].create2()
 
+        case "destroy":
+            if PCB1[x[1]].used == True:
+                PCB1[x[1]].destroy1()
+                PCB2[x[1]].destroy2()
+
+        case _:
+            pass
+
+for x in PCB1:
+    x.showProcessInfo()
+    print("\n\n")
+for x in PCB2:
+    x.showProcessInfo()
+    print("\n\n")
+
+#Store the current system time in a variable, then run the command sequence 200 times with Version 1. After this, store the new current system time in a second variable. Subtract the start time from the end time to get the Version 1 running time, then display the Version 1 running time.
+#Note: Don't call showProcessInfo while running this loop. This will make the output shorter and more readable.
+#Repeat step 7, but with Version 2.
+
+PCB1=[PCB()] * 16
+PCB1[0] = PCB(1, -1, 0)
+PCB2=[PCB()] * 16
+PCB2[0] = PCB(2, -1, 0)
+
+startTime1 = time.process_time()
+for j in range(0,200,1):
+    for x in commandList:
+        match x[0]:
+            case "create":
+                if PCB1[x[1]].used == True:
+                    PCB1[x[1]].create1()
+
+            case "destroy":
+                if PCB1[x[1]].used == True:
+                    PCB1[x[1]].destroy1()
+
+            case _:
+                pass
+endTime1 = time.process_time()
+
+
+startTime2 = time.process_time()
+for j in range(0,200,1):
+    for x in commandList:
+        match x[0]:
+            case "create":
+                if PCB2[x[1]].used == True:
+                    PCB2[x[1]].create2()
+
+            case "destroy":
+                if PCB2[x[1]].used == True:
+                    PCB2[x[1]].destroy2()
+
+            case _:
+                pass
+endTime2 = time.process_time()
+
+runtime1 = endTime1 - startTime1
+runtime2 = endTime2 - startTime2
+
+
+print("Run time for version 1: " + runtime1 + "\nRuntime for version2: " + runtime2)
 
 print("end of program")
