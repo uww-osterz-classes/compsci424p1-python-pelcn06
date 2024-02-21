@@ -3,7 +3,8 @@
 
 ## Your notes for me
 
-*If you have notes or messages for me, please put them here so I can see them.*
+(https://bugs.python.org/issue37859) -> This bug is for process_time and process_time_ns on windows systems.  Not sure how to fix it, but it just yields constant values despite being run at separate times with calculations in between.
+I got around it by using regular time_ns instead.  I'm not sure how I ran into it with 3.10 given that it specifies 3.7/8, but I'm also not super confident what I'm seeing is the truth with MSVS.
 
 ## About this repository and autograding
 
