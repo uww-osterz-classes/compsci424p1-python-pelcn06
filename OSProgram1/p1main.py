@@ -117,10 +117,27 @@ class PCB:
     initialize the list of children of PCB[q] as empty
     create a new link containing the child's index q and appends the link to the linked list of PCB[p]
     """
-    def create1(parent):
-        pass
-    def create2(parent):
-        pass
+    def create1(parent, PCB1):
+        for i in range(0,16,1):
+            if PCB1[i].used == False:
+                PCB1[i] = PCB(1, parent, i)
+                PCB1[parent].children.append(i)
+                break
+                
+    
+    def create2(parent, PCB2):
+        for i in range(0,16,1):
+            if PCB2[i].used == False:
+                PCB2[i] = PCB(2, parent, i)
+                if PCB2[parent].first_child == None:
+                    PCB2[parent].first_child = i
+                else:
+                    x = PCB2[parent].first_child
+                    while PCB2[x].younger_sibling != None:
+                        x = PCB2[x].younger_sibling
+                    PCB2[x].younger_sibling = i
+                    PCB2[i].older_sibling = x
+                
 
     """
             showProcessInfo()
@@ -172,13 +189,15 @@ for x in commandList:
     match x[0]:
         case "create":
             if PCB1[x[1]].used == True:
-                PCB1[x[1]].create1()
-                PCB2[x[2]].create2()
+                for i in range(0,16,1):
+                    
+                    PCB1[x[1]].create1(x[1], PCB1)
+                    PCB2[x[2]].create2(x[1], PCB2)
 
         case "destroy":
             if PCB1[x[1]].used == True:
-                PCB1[x[1]].destroy1()
-                PCB2[x[1]].destroy2()
+                PCB1[x[1]].destroy1(x[1])
+                PCB2[x[1]].destroy2(x[1])
 
         case _:
             pass
